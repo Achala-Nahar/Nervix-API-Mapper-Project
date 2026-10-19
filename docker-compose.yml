@@ -1,0 +1,26 @@
+name: nervix-module1-v4
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: nervix
+      POSTGRES_USER: nervix
+      POSTGRES_PASSWORD: nervix_local_v4
+    ports: ["55432:5432"]
+    volumes: ["nervix-postgres-v4:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nervix -d nervix"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/nervix_neo4j_local_v4
+    ports: ["57474:7474", "57687:7687"]
+    volumes: ["nervix-neo4j-v4:/data"]
+
+volumes:
+  nervix-postgres-v4:
+  nervix-neo4j-v4:
